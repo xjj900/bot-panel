@@ -6,346 +6,306 @@
 <title>小龙虾助手</title>
 <style>
 :root {
-  --bg: #f5f5f7;
-  --card-bg: #fff;
-  --text: #1d1d1f;
-  --text-secondary: #6e6e73;
-  --accent: #ff6b35;
-  --accent2: #f7931e;
-  --green: #34c759;
-  --blue: #007aff;
-  --red: #ff3b30;
-  --border: rgba(0,0,0,.06);
-  --shadow: 0 1px 3px rgba(0,0,0,.04),0 1px 2px rgba(0,0,0,.06);
-  --radius: 16px;
-  --radius-sm: 12px;
+  --bg: #f2f3f5;
+  --card: #fff;
+  --text: #1a1a2e;
+  --sub: #999;
+  --a: #ff6034;
+  --a2: #ff8c42;
+  --green: #07c160;
+  --blue: #3b82f6;
+  --purple: #8b5cf6;
+  --r: 14px;
+  --shadow: 0 1px 2px rgba(0,0,0,.04),0 2px 8px rgba(0,0,0,.06);
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
   font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-  background: var(--bg);
-  color: var(--text);
+  background: var(--bg); color: var(--text);
   -webkit-font-smoothing: antialiased;
   min-height: 100dvh;
-  padding-bottom: env(safe-area-inset-bottom,20px);
+  padding-bottom: env(safe-area-inset-bottom,16px);
+  user-select: none;
 }
 
-/* ── Header ── */
-.header {
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  padding: 28px 20px 32px;
+/* header */
+.h {
+  background: linear-gradient(150deg,#ff6034,#ff8c42,#ffb347);
+  padding: 30px 20px 36px;
   text-align: center;
-  border-radius: 0 0 28px 28px;
+  border-radius: 0 0 26px 26px;
   position: relative;
   overflow: hidden;
 }
-.header::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+.h::after {
+  content:""; position:absolute; inset:0;
+  background: radial-gradient(ellipse at 20% 80%, rgba(255,255,255,.12) 0%,transparent 60%),
+              radial-gradient(ellipse at 80% 20%, rgba(255,255,255,.08) 0%,transparent 60%);
 }
-.avatar {
-  width: 72px; height: 72px;
-  border-radius: 50%;
-  background: rgba(255,255,255,.25);
-  margin: 0 auto 12px;
+.av {
+  width: 68px; height: 68px; border-radius: 50%;
+  background: rgba(255,255,255,.22);
+  margin: 0 auto 10px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 36px;
-  backdrop-filter: blur(10px);
-  border: 3px solid rgba(255,255,255,.4);
+  font-size: 34px;
+  border: 2.5px solid rgba(255,255,255,.35);
+  position: relative; z-index: 1;
 }
-.header h1 { color: #fff; font-size: 22px; font-weight: 700; margin-bottom: 4px; }
-.header .tagline { color: rgba(255,255,255,.85); font-size: 14px; }
-.status-row {
-  display: inline-flex; align-items: center; gap: 6px;
-  margin-top: 12px;
-  background: rgba(255,255,255,.2);
-  border-radius: 20px;
-  padding: 5px 14px;
-  font-size: 13px; color: #fff;
+.h h1 { color:#fff; font-size:21px; font-weight:700; position:relative; z-index:1; }
+.h .tag { color:rgba(255,255,255,.82); font-size:13px; position:relative; z-index:1; margin-top:2px; }
+.st {
+  display: inline-flex; align-items: center; gap: 5px;
+  margin-top: 10px; background: rgba(255,255,255,.18);
+  border-radius: 14px; padding: 4px 12px;
+  font-size: 12px; color: #fff; position: relative; z-index: 1;
 }
-.status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px rgba(52,199,89,.6); }
+.st b { width:7px;height:7px;border-radius:50%;background:var(--green); }
 
-/* ── Container ── */
-.container { max-width: 520px; margin: 0 auto; padding: 16px; }
+/* tabs */
+.tabs { display:flex; gap:0; margin-bottom:12px; background:var(--card); border-radius:var(--r); padding:4px; box-shadow:var(--shadow); }
+.tab { flex:1; text-align:center; padding:10px 0; border-radius:11px; font-size:13px; font-weight:600; cursor:pointer; transition:.15s; color:var(--sub); }
+.tab.on { background:var(--a); color:#fff; }
 
-/* ── Cards ── */
-.card {
-  background: var(--card-bg);
-  border-radius: var(--radius);
-  padding: 18px 20px;
-  margin-bottom: 14px;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border);
-}
-.card-title {
-  font-size: 16px; font-weight: 600;
-  display: flex; align-items: center; gap: 8px;
-  margin-bottom: 14px;
-}
-.card-title .icon { font-size: 20px; }
+/* sections */
+.sec { display:none; }
+.sec.on { display:block; }
 
-/* Feature grid */
-.feature-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-.feature-item {
-  background: var(--bg);
-  border-radius: var(--radius-sm);
-  padding: 14px 12px;
-  text-align: center;
-  cursor: pointer;
-  transition: all .15s;
-  border: 1px solid transparent;
-  user-select: none;
-}
-.feature-item:active { background: #e8e8ed; transform: scale(.97); }
-.feature-item .feat-icon { font-size: 28px; display: block; margin-bottom: 6px; }
-.feature-item .feat-label { font-size: 13px; font-weight: 600; color: var(--text); }
-.feature-item .feat-hint { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+/* card */
+.card { background:var(--card); border-radius:var(--r); padding:16px 18px; margin-bottom:12px; box-shadow:var(--shadow); }
+.card h3 { font-size:15px; font-weight:600; display:flex; align-items:center; gap:7px; margin-bottom:12px; }
 
-/* Quick commands */
-.cmd-list { display: flex; flex-direction: column; gap: 8px; }
-.cmd-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 11px 14px;
-  background: var(--bg);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: all .15s;
-  border: 1px solid transparent;
+/* grid */
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; }
+.feat {
+  background: var(--bg); border-radius: 11px; padding: 13px 10px;
+  text-align: center; cursor: pointer; transition: .12s; border:1px solid transparent;
 }
-.cmd-item:active { background: #e8e8ed; transform: scale(.985); }
-.cmd-item .cmd-icon { font-size: 18px; width: 24px; text-align: center; }
-.cmd-item .cmd-info { flex: 1; }
-.cmd-item .cmd-name { font-size: 14px; font-weight: 600; }
-.cmd-item .cmd-desc { font-size: 12px; color: var(--text-secondary); }
-.cmd-item .cmd-arrow { color: #c7c7cc; font-size: 14px; }
+.feat:active { background:#e4e4e7; transform:scale(.965); }
+.feat .fi { font-size:26px; display:block; margin-bottom:4px; }
+.feat .fl { font-size:12px; font-weight:600; }
+.feat .fh { font-size:10px; color:var(--sub); margin-top:1px; }
 
-/* Toast */
+/* cmd row */
+.cmd {
+  display:flex; align-items:center; gap:10px;
+  padding:10px 12px; background:var(--bg); border-radius:10px;
+  margin-bottom:6px; cursor:pointer; transition:.12s;
+}
+.cmd:active { background:#e4e4e7; transform:scale(.985); }
+.cmd .ci { font-size:18px; width:24px; text-align:center; }
+.cmd .ct { flex:1; }
+.cmd .cn { font-size:13px; font-weight:600; }
+.cmd .cd { font-size:11px; color:var(--sub); }
+.cmd .ca { color:#c7c7cc; font-size:13px; }
+
+/* badge row */
+.badges { display:flex; gap:8px; }
+.badge {
+  flex:1; text-align:center; background:var(--card); border-radius:var(--r);
+  padding:14px 6px; box-shadow:var(--shadow);
+}
+.badge .bv { font-size:18px; font-weight:700; color:var(--a); }
+.badge .bl { font-size:11px; color:var(--sub); margin-top:1px; }
+
+/* tips */
+.tip {
+  background:#fff9ed; border-radius:10px; padding:10px 13px;
+  font-size:12px; color:#a4700f; display:flex; align-items:center; gap:7px; margin-top:10px;
+}
+
+/* toast */
 .toast {
-  position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-  background: #1d1d1f; color: #fff;
-  padding: 10px 20px; border-radius: 20px;
-  font-size: 14px;
-  opacity: 0; pointer-events: none;
-  transition: opacity .3s;
-  z-index: 1000;
+  position:fixed; top:20px; left:50%; transform:translateX(-50%);
+  background:#1a1a2e; color:#fff; padding:9px 18px; border-radius:18px;
+  font-size:13px; opacity:0; pointer-events:none; transition:opacity .25s; z-index:999;
 }
-.toast.show { opacity: 1; }
+.toast.show { opacity:1; }
 
-/* Info row */
-.info-row { display: flex; gap: 10px; }
-.info-badge {
-  flex: 1; text-align: center;
-  background: var(--card-bg);
-  border-radius: var(--radius-sm);
-  padding: 14px 10px;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border);
-}
-.info-badge .badge-val { font-size: 20px; font-weight: 700; color: var(--accent); }
-.info-badge .badge-label { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+/* footer */
+.foot { text-align:center; padding:12px 20px 20px; font-size:11px; color:var(--sub); }
+.foot a { color:var(--blue); text-decoration:none; }
 
-/* Footer */
-.footer { text-align: center; padding: 8px 20px 24px; color: var(--text-secondary); font-size: 12px; }
-.footer a { color: var(--blue); text-decoration: none; }
-
-/* Tips banner */
-.tips { 
-  background: #fffbf0; 
-  border-radius: var(--radius-sm); 
-  padding: 12px 14px; 
-  font-size: 13px; 
-  color: #8b6914;
-  display: flex; align-items: center; gap: 8px;
-  margin-bottom: 14px;
-}
-.tips .tips-icon { font-size: 18px; }
-
-/* Dark mode auto */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #1c1c1e;
-    --card-bg: #2c2c2e;
-    --text: #f5f5f7;
-    --text-secondary: #98989d;
-    --border: rgba(255,255,255,.08);
-    --shadow: 0 1px 3px rgba(0,0,0,.3);
-  }
-  .feature-item { background: #3a3a3c; }
-  .cmd-item { background: #3a3a3c; }
-  .tips { background: #2c2410; color: #d4a017; }
-  .toast { background: #f5f5f7; color: #1d1d1f; }
+@media (prefers-color-scheme:dark) {
+  :root { --bg:#1a1a1e; --card:#252528; --text:#e5e5e7; --sub:#888; --shadow:0 1px 2px rgba(0,0,0,.3); }
+  .feat { background:#2e2e32; }
+  .cmd { background:#2e2e32; }
+  .tip { background:#2e2810; color:#d4a017; }
+  .toast { background:#e5e5e7; color:#1a1a2e; }
 }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="avatar">🦞</div>
+<div class="h">
+  <div class="av">🦞</div>
   <h1>小龙虾助手</h1>
-  <p class="tagline">你的 QQ 智能伙伴 · 随时待命</p>
-  <div class="status-row">
-    <span class="status-dot"></span>
-    在线 · GLM-4
-  </div>
+  <p class="tag">你的全能 QQ 智能管家</p>
+  <div class="st"><b></b> 在线 · GLM-4 · 24h</div>
 </div>
 
-<div class="container">
+<div style="max-width:500px;margin:0 auto;padding:14px 16px;">
 
-  <!-- 功能面板 -->
-  <div class="card">
-    <div class="card-title"><span class="icon">🎯</span> 快捷功能</div>
-    <div class="feature-grid">
-      <div class="feature-item" data-copy="菜单">
-        <span class="feat-icon">🤖</span>
-        <span class="feat-label">功能菜单</span>
-        <span class="feat-hint">查看全部功能</span>
-      </div>
-      <div class="feature-item" data-copy="10分钟后提醒我开会">
-        <span class="feat-icon">⏰</span>
-        <span class="feat-label">定时提醒</span>
-        <span class="feat-hint">设置提醒事项</span>
-      </div>
-      <div class="feature-item" data-copy="帮我查一下今天的天气">
-        <span class="feat-icon">🌤️</span>
-        <span class="feat-label">天气查询</span>
-        <span class="feat-hint">实时天气信息</span>
-      </div>
-      <div class="feature-item" data-copy="帮我写一段文案：">
-        <span class="feat-icon">✍️</span>
-        <span class="feat-label">写作助手</span>
-        <span class="feat-hint">文案 / 翻译 / 润色</span>
-      </div>
-      <div class="feature-item" data-copy="给我播报今天的重要新闻">
-        <span class="feat-icon">📰</span>
-        <span class="feat-label">资讯播报</span>
-        <span class="feat-hint">今日热点速览</span>
-      </div>
-      <div class="feature-item" data-copy="帮我总结一下这个网页：">
-        <span class="feat-icon">📄</span>
-        <span class="feat-label">网页总结</span>
-        <span class="feat-hint">贴链接即可总结</span>
-      </div>
-    </div>
+  <div class="tabs">
+    <div class="tab on" data-tab="fun">🎯 功能</div>
+    <div class="tab" data-tab="cmd">⚡ 指令</div>
+    <div class="tab" data-tab="tool">🧰 工具</div>
   </div>
 
-  <!-- 内置指令 -->
-  <div class="card">
-    <div class="card-title"><span class="icon">⚡</span> 斜杠指令</div>
-    <div class="cmd-list">
-      <div class="cmd-item" data-copy="/bot-help">
-        <span class="cmd-icon">📋</span>
-        <div class="cmd-info"><span class="cmd-name">/bot-help</span><span class="cmd-desc">查看全部内置指令</span></div>
-        <span class="cmd-arrow">›</span>
-      </div>
-      <div class="cmd-item" data-copy="/bot-ping">
-        <span class="cmd-icon">📡</span>
-        <div class="cmd-info"><span class="cmd-name">/bot-ping</span><span class="cmd-desc">测试机器人响应延迟</span></div>
-        <span class="cmd-arrow">›</span>
-      </div>
-      <div class="cmd-item" data-copy="/bot-version">
-        <span class="cmd-icon">🏷️</span>
-        <div class="cmd-info"><span class="cmd-name">/bot-version</span><span class="cmd-desc">查看版本与运行信息</span></div>
-        <span class="cmd-arrow">›</span>
-      </div>
-      <div class="cmd-item" data-copy="/bot-logs">
-        <span class="cmd-icon">📋</span>
-        <div class="cmd-info"><span class="cmd-name">/bot-logs</span><span class="cmd-desc">导出最近日志</span></div>
-        <span class="cmd-arrow">›</span>
-      </div>
-      <div class="cmd-item" data-copy="/bot-approve">
-        <span class="cmd-icon">🔐</span>
-        <div class="cmd-info"><span class="cmd-name">/bot-approve</span><span class="cmd-desc">命令执行审批设置</span></div>
-        <span class="cmd-arrow">›</span>
-      </div>
-      <div class="cmd-item" data-copy="/bot-group-always">
-        <span class="cmd-icon">💬</span>
-        <div class="cmd-info"><span class="cmd-name">/bot-group-always</span><span class="cmd-desc">群聊自动发言模式切换</span></div>
-        <span class="cmd-arrow">›</span>
+  <!-- ====== 功能 ====== -->
+  <div class="sec on" id="sec-fun">
+
+    <div class="card">
+      <h3>📋 常用功能</h3>
+      <div class="grid3">
+        <div class="feat" data-copy="菜单">
+          <span class="fi">🤖</span><span class="fl">功能菜单</span><span class="fh">全部能力</span>
+        </div>
+        <div class="feat" data-copy="帮我查一下今天运势">
+          <span class="fi">🔮</span><span class="fl">今日运势</span><span class="fh">星座/运势</span>
+        </div>
+        <div class="feat" data-copy="5分钟后提醒我喝水">
+          <span class="fi">⏰</span><span class="fl">定时提醒</span><span class="fh">到点通知</span>
+        </div>
+        <div class="feat" data-copy="来一首好听的歌">
+          <span class="fi">🎵</span><span class="fl">点歌推荐</span><span class="fh">发现好音乐</span>
+        </div>
+        <div class="feat" data-copy="帮我查天气：">
+          <span class="fi">🌤️</span><span class="fl">天气查询</span><span class="fh">实时天气</span>
+        </div>
+        <div class="feat" data-copy="每日一句">
+          <span class="fi">📝</span><span class="fl">每日一句</span><span class="fh">励志语录</span>
+        </div>
       </div>
     </div>
+
+    <div class="card">
+      <h3>💬 对话助理</h3>
+      <div class="grid2">
+        <div class="feat" data-copy="帮我写一段文案：">
+          <span class="fi">✍️</span><span class="fl">写作助手</span><span class="fh">文案/润色</span>
+        </div>
+        <div class="feat" data-copy="翻译成英文：">
+          <span class="fi">🌐</span><span class="fl">翻译</span><span class="fh">多语言互译</span>
+        </div>
+        <div class="feat" data-copy="给我播报今天的新闻">
+          <span class="fi">📰</span><span class="fl">新闻播报</span><span class="fh">今日热点</span>
+        </div>
+        <div class="feat" data-copy="帮我总结这个：">
+          <span class="fi">📄</span><span class="fl">内容总结</span><span class="fh">贴链接即可</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🛠️ 实用工具</h3>
+      <div class="grid3">
+        <div class="feat" data-copy="帮我算：">
+          <span class="fi">🧮</span><span class="fl">计算器</span><span class="fh">数学运算</span>
+        </div>
+        <div class="feat" data-copy="写一段代码：">
+          <span class="fi">💻</span><span class="fl">代码助手</span><span class="fh">编程问答</span>
+        </div>
+        <div class="feat" data-copy="帮我建议：">
+          <span class="fi">💡</span><span class="fl">决策建议</span><span class="fh">帮你分析</span>
+        </div>
+      </div>
+    </div>
+
   </div>
 
-  <!-- 小贴士 -->
-  <div class="tips">
-    <span class="tips-icon">💡</span>
-    <span>点击上方任意功能或指令，自动复制到剪贴板。回到 QQ 粘贴发送给小龙虾即可。</span>
+  <!-- ====== 指令 ====== -->
+  <div class="sec" id="sec-cmd">
+
+    <div class="card">
+      <h3>⚡ 斜杠指令</h3>
+      <div class="cmd" data-copy="/bot-help">
+        <span class="ci">📋</span><div class="ct"><span class="cn">/bot-help</span><span class="cd">查看全部内置指令</span></div><span class="ca">›</span>
+      </div>
+      <div class="cmd" data-copy="/bot-ping">
+        <span class="ci">📡</span><div class="ct"><span class="cn">/bot-ping</span><span class="cd">测试响应延迟</span></div><span class="ca">›</span>
+      </div>
+      <div class="cmd" data-copy="/bot-version">
+        <span class="ci">🏷️</span><div class="ct"><span class="cn">/bot-version</span><span class="cd">查看版本信息</span></div><span class="ca">›</span>
+      </div>
+      <div class="cmd" data-copy="/bot-logs">
+        <span class="ci">📑</span><div class="ct"><span class="cn">/bot-logs</span><span class="cd">导出最近日志</span></div><span class="ca">›</span>
+      </div>
+      <div class="cmd" data-copy="/bot-approve">
+        <span class="ci">🔐</span><div class="ct"><span class="cn">/bot-approve</span><span class="cd">命令执行审批</span></div><span class="ca">›</span>
+      </div>
+      <div class="cmd" data-copy="/bot-group-always">
+        <span class="ci">💬</span><div class="ct"><span class="cn">/bot-group-always</span><span class="cd">群聊自动发言模式</span></div><span class="ca">›</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔗 快捷触发词</h3>
+      <div class="grid3">
+        <div class="feat" data-copy="签到"><span class="fi">📌</span><span class="fl">签到</span></div>
+        <div class="feat" data-copy="菜单"><span class="fi">📜</span><span class="fl">菜单</span></div>
+        <div class="feat" data-copy="帮助"><span class="fi">❓</span><span class="fl">帮助</span></div>
+      </div>
+    </div>
+
   </div>
 
-  <!-- 统计 -->
-  <div class="info-row">
-    <div class="info-badge">
-      <div class="badge-val">GLM-4</div>
-      <div class="badge-label">大模型</div>
-    </div>
-    <div class="info-badge">
-      <div class="badge-val">WebSocket</div>
-      <div class="badge-label">连接方式</div>
-    </div>
-    <div class="info-badge">
-      <div class="badge-val">24h</div>
-      <div class="badge-label">在线服务</div>
-    </div>
-  </div>
-</div>
+  <!-- ====== 工具 ====== -->
+  <div class="sec" id="sec-tool">
 
-<div class="footer">
-  <p>Powered by <a href="https://github.com/nicepkg/openclaw" target="_blank">OpenClaw</a> + 智谱 GLM-4</p>
-  <p style="margin-top:4px;">小龙虾助手 · 随时为你效劳 🦞</p>
+    <div class="card">
+      <h3>🧰 频道管理</h3>
+      <div class="grid2">
+        <div class="feat" data-copy="列出我的频道">
+          <span class="fi">📡</span><span class="fl">查看频道</span><span class="fh">列出所有</span>
+        </div>
+        <div class="feat" data-copy="创建一个频道：">
+          <span class="fi">➕</span><span class="fl">创建频道</span><span class="fh">新建一个</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📊 运行状态</h3>
+      <div class="badges">
+        <div class="badge"><div class="bv">GLM-4</div><div class="bl">大模型</div></div>
+        <div class="badge"><div class="bv">WebSocket</div><div class="bl">连接方式</div></div>
+        <div class="badge"><div class="bv">24h</div><div class="bl">在线时长</div></div>
+      </div>
+    </div>
+
+    <div class="tip">
+      <span>💡</span> 点击任意功能卡片自动复制指令，回到 QQ 粘贴发送即可
+    </div>
+
+  </div>
+
+  <div class="foot">
+    <p>Powered by <a href="https://github.com/nicepkg/openclaw" target="_blank">OpenClaw</a> · 智谱 GLM-4</p>
+    <p style="margin-top:3px">小龙虾助手 🦞 随时为你效劳</p>
+  </div>
+
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
 (function(){
-  const toast = document.getElementById('toast');
-  let timer;
-  function show(msg) {
-    toast.textContent = msg;
-    toast.classList.add('show');
-    clearTimeout(timer);
-    timer = setTimeout(function(){ toast.classList.remove('show'); }, 1800);
+  const t=document.getElementById('toast'); let tm;
+  function s(m){ t.textContent=m; t.classList.add('show'); clearTimeout(tm); tm=setTimeout(function(){t.classList.remove('show');},1600); }
+  function cp(v){
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(v).then(function(){s('✅ 已复制')}).catch(function(){s('📋 '+v)});}
+    else {var x=document.createElement('textarea');x.value=v;x.style.cssText='position:fixed;left:-9999px';document.body.appendChild(x);x.select();try{document.execCommand('copy');s('✅ 已复制')}catch(e){s('📋 '+v)}document.body.removeChild(x);}
+    if(navigator.vibrate)navigator.vibrate(6);
   }
-
-  // Copy to clipboard
-  function copy(text) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(function(){
-        show('✅ 已复制到剪贴板');
-      }).catch(function(){
-        show('📋 ' + text);
-      });
-    } else {
-      // Fallback
-      var ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.cssText = 'position:fixed;left:-9999px';
-      document.body.appendChild(ta);
-      ta.select();
-      try { document.execCommand('copy'); show('✅ 已复制到剪贴板'); } catch(e) { show('📋 ' + text); }
-      document.body.removeChild(ta);
-    }
-    // Haptic
-    if (navigator.vibrate) navigator.vibrate(8);
-  }
-
-  // Bind all clickable items
-  document.querySelectorAll('[data-copy]').forEach(function(el){
-    el.addEventListener('click', function(e){
-      e.preventDefault();
-      copy(el.getAttribute('data-copy'));
-    });
-  });
-
-  // If page is loaded in QQ's in-app browser, try to send to QQ
-  // QQ usually doesn't allow direct send, so copy is the reliable approach.
+  document.querySelectorAll('[data-copy]').forEach(function(e){e.addEventListener('click',function(ev){ev.preventDefault();cp(e.getAttribute('data-copy'));});});
+  // tabs
+  document.querySelectorAll('.tab').forEach(function(tb){tb.addEventListener('click',function(){
+    document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on');});
+    document.querySelectorAll('.sec').forEach(function(x){x.classList.remove('on');});
+    tb.classList.add('on'); document.getElementById('sec-'+tb.getAttribute('data-tab')).classList.add('on');
+  });});
 })();
 </script>
-
 </body>
 </html>
