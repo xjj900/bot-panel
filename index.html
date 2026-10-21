@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>小龙虾助手</title>
+<style>
+:root {
+  --bg: #f5f5f7;
+  --card-bg: #fff;
+  --text: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --accent: #ff6b35;
+  --accent2: #f7931e;
+  --green: #34c759;
+  --blue: #007aff;
+  --red: #ff3b30;
+  --border: rgba(0,0,0,.06);
+  --shadow: 0 1px 3px rgba(0,0,0,.04),0 1px 2px rgba(0,0,0,.06);
+  --radius: 16px;
+  --radius-sm: 12px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100dvh;
+  padding-bottom: env(safe-area-inset-bottom,20px);
+}
+
+/* ── Header ── */
+.header {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  padding: 28px 20px 32px;
+  text-align: center;
+  border-radius: 0 0 28px 28px;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.avatar {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.25);
+  margin: 0 auto 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px;
+  backdrop-filter: blur(10px);
+  border: 3px solid rgba(255,255,255,.4);
+}
+.header h1 { color: #fff; font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+.header .tagline { color: rgba(255,255,255,.85); font-size: 14px; }
+.status-row {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 12px;
+  background: rgba(255,255,255,.2);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 13px; color: #fff;
+}
+.status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px rgba(52,199,89,.6); }
+
+/* ── Container ── */
+.container { max-width: 520px; margin: 0 auto; padding: 16px; }
+
+/* ── Cards ── */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+.card-title {
+  font-size: 16px; font-weight: 600;
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 14px;
+}
+.card-title .icon { font-size: 20px; }
+
+/* Feature grid */
+.feature-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.feature-item {
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  padding: 14px 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .15s;
+  border: 1px solid transparent;
+  user-select: none;
+}
+.feature-item:active { background: #e8e8ed; transform: scale(.97); }
+.feature-item .feat-icon { font-size: 28px; display: block; margin-bottom: 6px; }
+.feature-item .feat-label { font-size: 13px; font-weight: 600; color: var(--text); }
+.feature-item .feat-hint { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+
+/* Quick commands */
+.cmd-list { display: flex; flex-direction: column; gap: 8px; }
+.cmd-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 14px;
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all .15s;
+  border: 1px solid transparent;
+}
+.cmd-item:active { background: #e8e8ed; transform: scale(.985); }
+.cmd-item .cmd-icon { font-size: 18px; width: 24px; text-align: center; }
+.cmd-item .cmd-info { flex: 1; }
+.cmd-item .cmd-name { font-size: 14px; font-weight: 600; }
+.cmd-item .cmd-desc { font-size: 12px; color: var(--text-secondary); }
+.cmd-item .cmd-arrow { color: #c7c7cc; font-size: 14px; }
+
+/* Toast */
+.toast {
+  position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+  background: #1d1d1f; color: #fff;
+  padding: 10px 20px; border-radius: 20px;
+  font-size: 14px;
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s;
+  z-index: 1000;
+}
+.toast.show { opacity: 1; }
+
+/* Info row */
+.info-row { display: flex; gap: 10px; }
+.info-badge {
+  flex: 1; text-align: center;
+  background: var(--card-bg);
+  border-radius: var(--radius-sm);
+  padding: 14px 10px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+.info-badge .badge-val { font-size: 20px; font-weight: 700; color: var(--accent); }
+.info-badge .badge-label { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+
+/* Footer */
+.footer { text-align: center; padding: 8px 20px 24px; color: var(--text-secondary); font-size: 12px; }
+.footer a { color: var(--blue); text-decoration: none; }
+
+/* Tips banner */
+.tips { 
+  background: #fffbf0; 
+  border-radius: var(--radius-sm); 
+  padding: 12px 14px; 
+  font-size: 13px; 
+  color: #8b6914;
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 14px;
+}
+.tips .tips-icon { font-size: 18px; }
+
+/* Dark mode auto */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1c1c1e;
+    --card-bg: #2c2c2e;
+    --text: #f5f5f7;
+    --text-secondary: #98989d;
+    --border: rgba(255,255,255,.08);
+    --shadow: 0 1px 3px rgba(0,0,0,.3);
+  }
+  .feature-item { background: #3a3a3c; }
+  .cmd-item { background: #3a3a3c; }
+  .tips { background: #2c2410; color: #d4a017; }
+  .toast { background: #f5f5f7; color: #1d1d1f; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="avatar">🦞</div>
+  <h1>小龙虾助手</h1>
+  <p class="tagline">你的 QQ 智能伙伴 · 随时待命</p>
+  <div class="status-row">
+    <span class="status-dot"></span>
+    在线 · GLM-4
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 功能面板 -->
+  <div class="card">
+    <div class="card-title"><span class="icon">🎯</span> 快捷功能</div>
+    <div class="feature-grid">
+      <div class="feature-item" data-copy="菜单">
+        <span class="feat-icon">🤖</span>
+        <span class="feat-label">功能菜单</span>
+        <span class="feat-hint">查看全部功能</span>
+      </div>
+      <div class="feature-item" data-copy="10分钟后提醒我开会">
+        <span class="feat-icon">⏰</span>
+        <span class="feat-label">定时提醒</span>
+        <span class="feat-hint">设置提醒事项</span>
+      </div>
+      <div class="feature-item" data-copy="帮我查一下今天的天气">
+        <span class="feat-icon">🌤️</span>
+        <span class="feat-label">天气查询</span>
+        <span class="feat-hint">实时天气信息</span>
+      </div>
+      <div class="feature-item" data-copy="帮我写一段文案：">
+        <span class="feat-icon">✍️</span>
+        <span class="feat-label">写作助手</span>
+        <span class="feat-hint">文案 / 翻译 / 润色</span>
+      </div>
+      <div class="feature-item" data-copy="给我播报今天的重要新闻">
+        <span class="feat-icon">📰</span>
+        <span class="feat-label">资讯播报</span>
+        <span class="feat-hint">今日热点速览</span>
+      </div>
+      <div class="feature-item" data-copy="帮我总结一下这个网页：">
+        <span class="feat-icon">📄</span>
+        <span class="feat-label">网页总结</span>
+        <span class="feat-hint">贴链接即可总结</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 内置指令 -->
+  <div class="card">
+    <div class="card-title"><span class="icon">⚡</span> 斜杠指令</div>
+    <div class="cmd-list">
+      <div class="cmd-item" data-copy="/bot-help">
+        <span class="cmd-icon">📋</span>
+        <div class="cmd-info"><span class="cmd-name">/bot-help</span><span class="cmd-desc">查看全部内置指令</span></div>
+        <span class="cmd-arrow">›</span>
+      </div>
+      <div class="cmd-item" data-copy="/bot-ping">
+        <span class="cmd-icon">📡</span>
+        <div class="cmd-info"><span class="cmd-name">/bot-ping</span><span class="cmd-desc">测试机器人响应延迟</span></div>
+        <span class="cmd-arrow">›</span>
+      </div>
+      <div class="cmd-item" data-copy="/bot-version">
+        <span class="cmd-icon">🏷️</span>
+        <div class="cmd-info"><span class="cmd-name">/bot-version</span><span class="cmd-desc">查看版本与运行信息</span></div>
+        <span class="cmd-arrow">›</span>
+      </div>
+      <div class="cmd-item" data-copy="/bot-logs">
+        <span class="cmd-icon">📋</span>
+        <div class="cmd-info"><span class="cmd-name">/bot-logs</span><span class="cmd-desc">导出最近日志</span></div>
+        <span class="cmd-arrow">›</span>
+      </div>
+      <div class="cmd-item" data-copy="/bot-approve">
+        <span class="cmd-icon">🔐</span>
+        <div class="cmd-info"><span class="cmd-name">/bot-approve</span><span class="cmd-desc">命令执行审批设置</span></div>
+        <span class="cmd-arrow">›</span>
+      </div>
+      <div class="cmd-item" data-copy="/bot-group-always">
+        <span class="cmd-icon">💬</span>
+        <div class="cmd-info"><span class="cmd-name">/bot-group-always</span><span class="cmd-desc">群聊自动发言模式切换</span></div>
+        <span class="cmd-arrow">›</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 小贴士 -->
+  <div class="tips">
+    <span class="tips-icon">💡</span>
+    <span>点击上方任意功能或指令，自动复制到剪贴板。回到 QQ 粘贴发送给小龙虾即可。</span>
+  </div>
+
+  <!-- 统计 -->
+  <div class="info-row">
+    <div class="info-badge">
+      <div class="badge-val">GLM-4</div>
+      <div class="badge-label">大模型</div>
+    </div>
+    <div class="info-badge">
+      <div class="badge-val">WebSocket</div>
+      <div class="badge-label">连接方式</div>
+    </div>
+    <div class="info-badge">
+      <div class="badge-val">24h</div>
+      <div class="badge-label">在线服务</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <p>Powered by <a href="https://github.com/nicepkg/openclaw" target="_blank">OpenClaw</a> + 智谱 GLM-4</p>
+  <p style="margin-top:4px;">小龙虾助手 · 随时为你效劳 🦞</p>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  const toast = document.getElementById('toast');
+  let timer;
+  function show(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(timer);
+    timer = setTimeout(function(){ toast.classList.remove('show'); }, 1800);
+  }
+
+  // Copy to clipboard
+  function copy(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){
+        show('✅ 已复制到剪贴板');
+      }).catch(function(){
+        show('📋 ' + text);
+      });
+    } else {
+      // Fallback
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.cssText = 'position:fixed;left:-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); show('✅ 已复制到剪贴板'); } catch(e) { show('📋 ' + text); }
+      document.body.removeChild(ta);
+    }
+    // Haptic
+    if (navigator.vibrate) navigator.vibrate(8);
+  }
+
+  // Bind all clickable items
+  document.querySelectorAll('[data-copy]').forEach(function(el){
+    el.addEventListener('click', function(e){
+      e.preventDefault();
+      copy(el.getAttribute('data-copy'));
+    });
+  });
+
+  // If page is loaded in QQ's in-app browser, try to send to QQ
+  // QQ usually doesn't allow direct send, so copy is the reliable approach.
+})();
+</script>
+
+</body>
+</html>
